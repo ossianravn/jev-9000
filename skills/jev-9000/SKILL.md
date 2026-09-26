@@ -1,6 +1,6 @@
 ---
 name: jev-9000
-description: Consult Jev to check propositions, compare alternatives, and assess trade-offs during the current task. Use when the user asks for Jev or JEV 9000, defines areas for consultation, or gives standing instructions to seek Jev's judgment when useful.
+description: Consult Jev for proposition checks, choices, trade-offs, and skill selection during the current task. Use when the user requests Jev or JEV 9000, scopes consultation, or gives standing instructions to seek its judgment when useful.
 ---
 
 # JEV 9000
@@ -39,6 +39,30 @@ types. They cannot see each other's answers. A dependent follow-up needs a new
 evaluation containing the earlier answer or updated evidence. Consult again
 when the context, priorities, or question changes; no fixed call budget applies.
 Avoid rephrasing an unchanged question repeatedly to obtain a preferred answer.
+
+## Select relevant skills
+
+When the user asks Jev to help choose skills, or skill selection falls within
+their consultation scope:
+
+1. Gather the task, intended outcome, current stage, and constraints. Identify
+   available candidates from the host's skill catalogue, preserving their names
+   and descriptions. Include known prerequisites or exclusions that affect fit.
+   Treat skills explicitly requested or required by applicable instructions as
+   fixed context; their use does not depend on Jev's relevance judgment.
+2. Batch one Noul per candidate whose relevance needs assessment. In each
+   question's instructions, identify the candidate and ask whether using its
+   described workflow would materially help with this task at the current stage.
+   Supply its actual description in state or instructions; a name/path alone
+   does not establish what the skill does.
+3. Use these probabilities with the task context to select useful skills;
+   several or no optional skills may fit. Apply no fixed probability cutoff.
+   Use Choice only when the decision calls for one among competing alternatives.
+4. Read the selected SKILL.md files through the host's normal loading mechanism,
+   follow their applicable instructions, and continue the task. Resolve an
+   unclear or misleading catalogue description against the actual skill before
+   applying it. Briefly explain a material selection; selection alone is not
+   completion of the user's task.
 
 ## Interpret and continue
 

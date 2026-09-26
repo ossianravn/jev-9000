@@ -196,3 +196,49 @@ failed while backing up the cache with Windows Access is denied; direct bundle
 replacement succeeded. Workspace/source/cache SHA-256 matches:
 `8ef0cb51ad52450f2a0463cd520f963c250ca0a95751e80fae012889d20e317d`.
 Already running MCP processes need a restart to load this change.
+
+## Skill-selection workflow — September 26, 2026
+
+The user approved skill-selection consultation through the existing evaluator.
+The agent supplies the task, stage, constraints, and actual candidate descriptions;
+independent Noul questions allow several or no optional skills to fit. Required
+skills remain fixed context. The agent reads selected instructions and continues
+the task, without a fixed probability cutoff or a forced single winner.
+
+Implementation and verification plan:
+
+1. [x] Add the workflow and discovery wording to the shared JEV skill.
+2. [x] Explain the user prompt, relevance judgments, and agent continuation in README.
+3. [x] Run one installed Codex invocation case with a synthetic three-skill catalogue:
+   diagnostic, user-required reporting, and unrelated visual work. Review the
+   actual call, skill reads, task outcome, and unchanged fixture files separately.
+4. [x] Refresh the normal installed skill, confirm its hash, and record the evidence.
+
+Reference: TypeSafe's [Noul documentation](https://docs.typesafe.ai/primitives/noul)
+and [skill-suggestion cookbook](https://docs.typesafe.ai/cookbooks/skill_suggestion)
+were consulted. The cookbook's one-winner restriction and numeric thresholds are
+example policies; this workflow follows the user's approved multi-skill design.
+Runtime/API contracts and dependencies are unchanged. No new unit tests were added.
+
+`npm run eval:run -- --case skill-selection --arm treatment` completed in Codex.
+One live `jev-1.13.0` call returned Noul 0.70 for `trace-failure` and 0.03 for
+`visual-polish`; it used 731 input and 39 output tokens. The user-required
+`plain-report` skill was fixed context, rather than subject to a relevance gate.
+The agent read the selected skill files, reproduced the failure, and verified a
+suggested fix in memory. The existing unchanged-artifact grader passed, and the
+complete fixture's initial/final hashes matched. Agent-assisted trace review
+passed; this one synthetic case does not establish general selection quality.
+
+Evidence and report:
+`C:/Users/Ossian/.jev-9000/evals/2026-09-26T13-36-07.064Z-382af6f3/`.
+`turn-1.jsonl` lines 9/12/20 show skill reads, line 18 the actual consultation,
+and lines 25/28 the reproduction and in-memory verification. The known defective
+fixture is intentional; the failed reproduction assertion is expected evidence.
+
+Workspace, local source, ordinary installed cache, and trial-recorded skill hash
+match `ac613ee8af5640293e43b67762d62ce8cc2cb3a745b1ba3d5bc5b61cfa489580`.
+The existing 0.2.0 runtime bundle is unchanged. Start a new host session to load
+the updated skill. Claude's previously recorded authentication gap remains.
+Case JSON, catalogue descriptions/paths, `git diff --check`, and the new code
+file's physical line count (13) passed. Existing runtime test results remain
+applicable; no application suite or extra model trial was needed.

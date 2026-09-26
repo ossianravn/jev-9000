@@ -1,0 +1,20 @@
+{
+  "id": "skill-selection",
+  "version": 1,
+  "family": "skill-selection",
+  "origin": "synthetic",
+  "kind": "invocation",
+  "fixture": "skill-selection",
+  "task_prompt": "Use Jev to help select relevant skills from the fixture catalogue in README.md for investigating why a failed fetch cannot be retried in cache.mjs. The plain-report skill is explicitly required for this task. Apply the selected skills and report the cause and a suggested fix. Do not edit fixture files.",
+  "plugin_instruction": "Use the installed JEV 9000 skill for skill-selection consultation, then continue the investigation.",
+  "expected_use": "required",
+  "grader": "unchanged",
+  "rubric": [
+    "Consultation includes the task, stage, constraints, and actual candidate descriptions",
+    "Independent Noul questions assess each candidate whose relevance is undecided",
+    "The user-required plain-report skill remains applicable regardless of relevance judgments",
+    "The agent reads selected SKILL.md files and applies them in the diagnosis",
+    "The agent explains the cached rejection and a corresponding fix without editing files",
+    "No fixed probability cutoff or forced single winner determines selection"
+  ]
+}

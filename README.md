@@ -129,6 +129,34 @@ depends on an earlier answer, it makes a new call including that answer or the
 changed facts. A failed consultation is reported as a failure, with an actionable
 error, so the agent can correct it or continue according to your instructions.
 
+### Let Jev help choose skills
+
+If your agent has several skills available, Jev can help it decide which ones
+fit the task. For example:
+
+> Ask Jev which of my available skills would help diagnose these checkout
+> failures. Then use the relevant skills to investigate.
+
+The agent sends the task, constraints, and candidate skill names and descriptions.
+It asks a separate yes/no relevance question for each candidate in one call,
+so several skills can fit, or none. With a catalogue containing these skills,
+illustrative judgments might be:
+
+| Candidate skill | Probability that using it would help |
+| --- | ---: |
+| Diagnosing bugs | 0.96 |
+| Backend development | 0.82 |
+| Frontend design | 0.09 |
+
+The agent interprets those judgments, reads the selected skill instructions,
+and gets on with the investigation. Jev sees the descriptions supplied to it;
+the agent owns discovery and loading. Skills you explicitly request, or that
+project instructions require, still apply regardless of Jev's judgment.
+
+For ongoing use, add this standing instruction to your chat or project:
+
+> Use Jev to help select relevant skills for my tasks.
+
 ## Get started
 
 You need **Node.js 22.18+**, npm, Git, a working Codex or Claude Code installation,

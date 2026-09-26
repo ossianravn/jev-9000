@@ -17,12 +17,15 @@ npm run eval:run -- --case excluded-edit --arm treatment
 npm run eval:run -- --case discretionary-edit --arm treatment
 npm run eval:run -- --case changed-scope --arm treatment
 npm run eval:run -- --case native-followup --arm treatment
+npm run eval:run -- --case skill-selection --arm treatment
 ```
 
 Select cases for the question under investigation; this list is not a required
 suite. `cache-recovery` and `cache-discretionary` share one task family and must
 not be represented as unrelated confirmation cases. They are synthetic fixtures.
 Direct requests and scope-change cases assess invocation, not baseline efficacy.
+`skill-selection` uses a small synthetic skill catalogue to check consultation,
+loading and applying selected instructions, and preserving a user-required skill.
 
 `--host` selects `codex` (default) or `claude`. Codex reads model/effort from the
 current user config unless supplied. Claude requires explicit `--model` and
