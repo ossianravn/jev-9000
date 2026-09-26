@@ -1,0 +1,19 @@
+{
+  "name": "jev-9000",
+  "version": "0.1.0",
+  "description": "Consult Jev for checks, choices, and trade-off assessments during your task.",
+  "author": {
+    "name": "Ossian"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "JEV 9000",
+    "shortDescription": "Another judgment for the task at hand.",
+    "longDescription": "Ask Jev to check a proposition, compare alternatives, or assess trade-offs. Your coding agent uses the typed result to continue your work.",
+    "developerName": "Ossian",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": ["Ask Jev which approach best fits this task."]
+  },
+  "mcpServers": "./.mcp.json"
+}
