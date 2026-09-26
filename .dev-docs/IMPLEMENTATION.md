@@ -330,7 +330,7 @@ Plan:
    GitHub install, personal configuration, fresh session, smoke prompt, updates.
 4. [x] Validate the package, install from a clean Git snapshot using an isolated
    Codex configuration on Windows, and exercise the installed MCP path.
-5. [ ] Publish to GitHub and verify the documented remote install/update commands
+5. [x] Publish to GitHub and verify the documented remote install/update commands
    against it. Record results, with WSL explicitly left to the user.
 
 Validation is packaging/installation focused. Reuse the existing mixed MCP smoke
@@ -354,3 +354,19 @@ transport validation, not a new host-agent trial or WSL result.
 Evidence: `C:/Users/Ossian/.jev-9000/verification/github-distribution-20260926/`.
 `local-install-0.json`, `local-install-1.json`, and `local-smoke.json` retain the
 installation and call results; runtime records are under `local-calls/`.
+
+Published distribution commit `d4e3d14` to `origin/main`. In a second fresh
+Windows CODEX_HOME, the documented `codex plugin marketplace add
+ossianravn/jev-9000` and `codex plugin add jev-9000@jev-9000` commands installed
+version 0.3.0 directly from GitHub. `marketplace upgrade jev-9000`, reinstall,
+and `plugin list --marketplace jev-9000 --json` also passed; the listing reports
+enabled=true and the GitHub Git source. This checks a refresh of the current
+version, not a transition to a future release.
+
+All ten distributed files match byte-for-byte between the generated package,
+the clean-snapshot installation used for the live smoke, and the GitHub
+installation. No second identical API call was needed. Evidence is in
+`github-step-0.json` through `github-step-4.json` and `package-identity.json`.
+The user's ordinary Windows installation was not changed by these isolated
+checks. WSL execution is explicitly left to the user as requested; Claude's
+previously recorded host-authentication gap is unchanged.
