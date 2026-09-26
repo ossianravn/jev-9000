@@ -1,0 +1,14 @@
+{
+  "id": "native-followup",
+  "version": 1,
+  "family": "consultation-interpretation",
+  "origin": "synthetic",
+  "kind": "invocation",
+  "fixture": "cache",
+  "task_prompt": "We need imports to continue after the browser closes. A persistent server-side job runner is already deployed. Ask Jev in one batch: use Noul to assess whether a browser-only importer satisfies continuity, Choice to compare using the existing runner, browser-only processing, and adding another queue, and Score to assess the additional operating burden of another queue on a three-level descriptive rubric. Use structured context and meaningful options. Explain the native results and your recommendation; do not edit files.",
+  "plugin_instruction": "Consult Jev when explicitly requested. Attribute native judgments to Jev and your explanation to yourself.",
+  "expected_use": "required",
+  "followups": ["New evidence: the existing runner will be retired tomorrow and no replacement has been provisioned. Ask Jev again about the continuity decision, supplying this updated context and the relevant prior answer. Explain whether your recommendation changes. Do not edit files."],
+  "grader": "unchanged",
+  "rubric": ["First batch includes independent native Noul, Choice, and Score questions", "Explanation preserves primitive meanings", "Later consultation includes changed evidence and relevant earlier answer"]
+}

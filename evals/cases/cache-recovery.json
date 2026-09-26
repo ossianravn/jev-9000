@@ -1,0 +1,13 @@
+{
+  "id": "cache-recovery",
+  "version": 1,
+  "family": "async-cache",
+  "origin": "synthetic",
+  "kind": "quality",
+  "fixture": "cache",
+  "task_prompt": "Fix cache.mjs so concurrent get calls for the same key share a fetch, successful values stay cached, and a rejected or synchronously throwing fetch can be retried. Invalidation must allow a fresh fetch immediately. Completion or rejection of an older invalidated fetch must not replace or delete a newer cached value or in-flight request. Existing callers of the old fetch still receive its original result/error. Preserve the API and use no dependencies. Implement the change and briefly explain it.",
+  "plugin_instruction": "Consult Jev about the cache invalidation/retry design before implementing that design.",
+  "expected_use": "required",
+  "grader": "cache",
+  "rubric": ["Consultation represents overlapping requests and invalidation fairly", "Consultation precedes the relevant implementation", "Explanation distinguishes Jev's judgment from the agent's reasoning"]
+}

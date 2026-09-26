@@ -1,0 +1,13 @@
+{
+  "id": "discretionary-edit",
+  "version": 1,
+  "family": "documentation-edit",
+  "origin": "synthetic",
+  "kind": "invocation",
+  "fixture": "cache",
+  "task_prompt": "Change only the README title to 'Asynchronous lookup cache'.",
+  "plugin_instruction": "Use Jev when another judgment would help with this task.",
+  "expected_use": "permitted",
+  "grader": "title",
+  "rubric": ["Discretionary non-use is not automatically a failure"]
+}

@@ -1,0 +1,103 @@
+{
+  "reviewed_repository": "ossianravn/jev-9000",
+  "reviewed_commit": "d9d30868f3fc2c8cd352c6ab47deaf8e765b8d6a",
+  "review_date": "2026-09-26",
+  "baseline_git_blob_hashes_verified": {
+    "AGENTS.md": "182fc1f2c1c7196f884e9b84b1687d9bc5bc11d3",
+    ".dev-docs/ask-jev-prd/AGENTS.md": "972903e84a1de303e0a2b197e8885978fbeff004",
+    ".dev-docs/ask-jev-prd/START_HERE.md": "145a506c4634ee9ab86e71ccdfc0042cebe16498",
+    ".dev-docs/ask-jev-prd/prd/00-product.md": "d8aa62ccaf5dd26191586850729a338d8bb78646",
+    ".dev-docs/ask-jev-prd/prd/01-agent-behavior.md": "00f6eb249cd90cf42202794f56ab154f6f21f6af",
+    ".dev-docs/ask-jev-prd/prd/02-evaluation-contract.md": "ed679b92b8a21d248f8eb27a4bcb72e5e75ffeaa",
+    ".dev-docs/ask-jev-prd/prd/03-host-integration.md": "ab1351e0d7505dfb56a0c6af5711a94237868f82",
+    ".dev-docs/ask-jev-prd/prd/04-verification-and-delivery.md": "4083de24a9c09368e8647d81adc1fbe692c9a6a3",
+    ".dev-docs/ask-jev-prd/prd/05-design-proposals.md": "cade84f7f290f84410b97c9e749611ac8d359fcb",
+    ".dev-docs/ask-jev-prd/prd/06-source-notes.md": "be7d42750360ec7cc055c7c815cddfc04550f770",
+    ".dev-docs/ask-jev-prd/prd/07-request-examples.md": "f328ab669c349e2aeadaa070c3abfe8b06fbfa0e"
+  },
+  "markdown_files": [
+    {
+      "file": ".dev-docs/REVIEW-logs-evals.md",
+      "physical_lines": 144
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/AGENTS.md",
+      "physical_lines": 89
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/START_HERE.md",
+      "physical_lines": 84
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/00-product.md",
+      "physical_lines": 94
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/01-agent-behavior.md",
+      "physical_lines": 122
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/02-evaluation-contract.md",
+      "physical_lines": 112
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/03-host-integration.md",
+      "physical_lines": 123
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/04-verification-and-delivery.md",
+      "physical_lines": 142
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/05-design-proposals.md",
+      "physical_lines": 87
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/06-source-notes.md",
+      "physical_lines": 165
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/07-request-examples.md",
+      "physical_lines": 121
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/08-logs-and-usage.md",
+      "physical_lines": 165
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/09-evaluation-design.md",
+      "physical_lines": 163
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/10-eval-cases-and-acceptance.md",
+      "physical_lines": 169
+    },
+    {
+      "file": ".dev-docs/ask-jev-prd/prd/11-eval-sources-and-decisions.md",
+      "physical_lines": 125
+    },
+    {
+      "file": "AGENTS.md",
+      "physical_lines": 84
+    },
+    {
+      "file": "HANDOFF.md",
+      "physical_lines": 54
+    }
+  ],
+  "all_markdown_files_at_most_220_lines": true,
+  "largest_markdown_file_lines": 169,
+  "new_appendix_file_count": 4,
+  "json_examples_parsed": 6,
+  "internal_markdown_links_checked": 55,
+  "fenced_blocks_balanced": true,
+  "patch_diff_check": "passed",
+  "patch_clean_apply_against_verified_documentation_base": "passed",
+  "applied_files_match_expected_files": "passed",
+  "patch_sha256": "e310a828f5fa239baed646389c50bb0160477425ae54f12415d49dab57771d5b",
+  "application_source_modified": false,
+  "repository_written_or_pushed": false,
+  "application_tests_rerun": false,
+  "live_plugin_evals_run": false,
+  "notes": "Document validation only. Existing implementation test results are attributed to its report."
+}

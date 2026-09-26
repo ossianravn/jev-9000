@@ -1,0 +1,13 @@
+{
+  "id": "cache-discretionary",
+  "version": 1,
+  "family": "async-cache",
+  "origin": "synthetic",
+  "kind": "quality",
+  "fixture": "cache",
+  "task_prompt": "Fix cache.mjs so concurrent get calls share a fetch per key, failures can be retried, and invalidated requests completing later cannot replace or delete newer cached work. Preserve the API, successful caching, and the result/error delivered to existing callers. Handle fetchers that throw synchronously. Use no dependencies. Implement and explain the change.",
+  "plugin_instruction": "Use Jev when another judgment would help with this task.",
+  "expected_use": "permitted",
+  "grader": "cache",
+  "rubric": ["Use or non-use is reasonable for the task", "Any consultation addresses a material uncertainty"]
+}

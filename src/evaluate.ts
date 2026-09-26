@@ -1,53 +1,47 @@
-import {
-  APIConnectionError, APIError, APITimeoutError, APIUserAbortError,
-} from '@typesafe-ai/sdk';
+import { randomUUID } from 'node:crypto';
 import type { TypeSafeClient } from '@typesafe-ai/sdk';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
-import { ZodError } from 'zod';
 import { evaluationInput, validateResult } from './contract.ts';
-
-function errorMessage(error: unknown): string {
-  let message = error instanceof Error ? error.message : 'Unexpected evaluation failure.';
-  if (error instanceof ZodError) {
-    message = error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`).join('; ');
-  } else if (error instanceof APIError) {
-    if (error.requestId) message += ` (request ${error.requestId})`;
-    if (error.status === 401 || error.status === 403) {
-      message += ' Check TYPESAFE_API_KEY and its access in the MCP process configuration.';
-    } else if (error.status === 400 || error.status === 422) {
-      message += ' Correct the indicated request field and try again.';
-    } else if (error.status === 404) {
-      message += ' Check the configured model and TypeSafe endpoint.';
-    } else if (error.status === 429 || error.status >= 500) {
-      message += ' TypeSafe could not complete this evaluation; try again when available.';
-    }
-  } else if (error instanceof APIUserAbortError) {
-    message = 'The host cancelled the TypeSafe evaluation.';
-  } else if (error instanceof APITimeoutError || error instanceof APIConnectionError) {
-    message += ' Check network access to TypeSafe and try again.';
-  }
-  const key = process.env.TYPESAFE_API_KEY?.trim();
-  if (key) message = message.replaceAll(key, '[redacted]');
-  return message.replace(/Bearer\s+[^\s"',;]+/gi, 'Bearer [redacted]');
-}
+import { describeFailure } from './failure.ts';
+import type { Stage } from './failure.ts';
+import type { RecordSink } from './recording.ts';
 
 export async function evaluate(
   value: unknown,
-  getClient: () => Pick<TypeSafeClient, 'systemOne'>,
+  getClient: () => Pick<TypeSafeClient, 'systemOne'> & Partial<Pick<TypeSafeClient, 'defaultModel'>>,
   signal?: AbortSignal,
+  record?: RecordSink,
 ): Promise<CallToolResult> {
+  const callId = randomUUID();
+  await record?.({ event: 'consultation.started', call_id: callId, input: value });
+  const started = performance.now();
+  let stage: Stage = 'input';
+  let effectiveModel: string | null = null;
+  const complete = (fields: Record<string, unknown>) => record?.({
+    event: 'consultation.completed', call_id: callId,
+    duration_ms: performance.now() - started, effective_model: effectiveModel, ...fields,
+  });
   try {
     const input = evaluationInput.parse(value);
-    const response = await getClient().systemOne(input, { signal });
+    effectiveModel = input.model ?? null;
+    stage = 'setup';
+    const client = getClient();
+    effectiveModel = input.model ?? client.defaultModel ?? null;
+    stage = 'provider';
+    const response = await client.systemOne(input, { signal });
+    stage = 'response';
     const result = validateResult(response, input.questions);
+    await complete({ status: 'success', result });
     return {
       structuredContent: result,
       content: [{ type: 'text', text: JSON.stringify(result) }],
     };
   } catch (error) {
+    const failure = describeFailure(error, stage);
+    await complete({ status: 'failure', failure });
     return {
       isError: true,
-      content: [{ type: 'text', text: `Jev evaluation failed: ${errorMessage(error)}` }],
+      content: [{ type: 'text', text: `Jev evaluation failed: ${failure.message}` }],
     };
   }
 }

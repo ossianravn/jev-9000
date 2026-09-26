@@ -11,6 +11,7 @@ const { values } = parseArgs({ options: {
   host: { type: 'string', default: 'codex' },
   env: { type: 'string' },
   mode: { type: 'string', default: 'choice' },
+  'log-dir': { type: 'string' },
 } });
 const root = resolve(values.root);
 const configFile = values.host === 'claude' ? '.mcp.json' : 'mcp.json';
@@ -21,6 +22,7 @@ const env = {
   ...server.env,
 };
 if (values.env) env.JEV_9000_ENV_FILE = resolve(values.env);
+if (values['log-dir']) env.JEV_9000_LOG_DIR = resolve(values['log-dir']);
 const transport = new StdioClientTransport({
   command: server.command,
   args: server.args.map(arg => arg.replaceAll('${PLUGIN_ROOT}', root).replaceAll('${CLAUDE_PLUGIN_ROOT}', root)),

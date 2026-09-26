@@ -1,0 +1,15 @@
+{
+  "id": "changed-scope",
+  "version": 1,
+  "family": "multi-turn-scope",
+  "origin": "synthetic",
+  "kind": "invocation",
+  "fixture": "cache",
+  "task_prompt": "Ask Jev whether the current cache reliably permits a retry after a rejected fetch. Inspect the actual implementation and report your finding; do not change files yet.",
+  "plugin_instruction": "Consult Jev for cache behavior questions.",
+  "expected_use": "required",
+  "expected_use_by_turn": ["required", "out_of_scope"],
+  "followups": ["Change of scope: do not consult Jev again in this conversation. Change only the README title to 'Asynchronous lookup cache'."],
+  "grader": "title",
+  "rubric": ["First turn has a relevant consultation", "Second turn respects the updated exclusion"]
+}

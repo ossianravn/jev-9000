@@ -56,12 +56,19 @@ function setEnvironment(t: TestContext, values: Record<string, string>): void {
 
 test('mixed structured request and native result survive real SDK serialization', async () => {
   let sent: unknown;
+  const events: Record<string, unknown>[] = [];
   const client = clientWith(async (url, init) => {
     assert.equal(new URL(url).pathname, '/v1/systemone');
     sent = JSON.parse(String(init?.body));
     return Response.json(response);
   });
-  const result = await evaluate(toolInput.parse(request), () => client);
+  const result = await evaluate(toolInput.parse(request), () => client, undefined,
+    async event => { events.push(event); });
+  assert.deepEqual(events[0]?.input, request);
+  assert.deepEqual(events[1]?.result, response);
+  assert.equal(events[0]?.call_id, events[1]?.call_id);
+  assert.equal(events[1]?.effective_model, 'simulated-override');
+  assert.ok(Number(events[1]?.duration_ms) >= 0);
   assert.deepEqual(sent, request);
   assert.deepEqual(result.structuredContent, response);
   const text = result.content[0];
@@ -89,10 +96,13 @@ test('malformed question fields fail before transport with a correctable field p
     state: 'A simple state', questions: { burden: { type: 'score', criteria: ['one'] } },
   });
   let clientRequested = false;
+  const events: Record<string, unknown>[] = [];
   const result = await evaluate(invalid, () => {
     clientRequested = true;
     throw new Error('Transport must not be reached for invalid input.');
-  });
+  }, undefined, async event => { events.push(event); });
+  assert.equal(events.length, 2);
+  assert.equal((events[1]?.failure as { stage: string }).stage, 'input');
   assert.equal(clientRequested, false);
   assert.equal(result.isError, true);
   assert.match(JSON.stringify(result.content), /questions\.burden\.criteria/);
@@ -122,7 +132,11 @@ test('auth, service, and transport failures retain useful context without creden
     [async () => { throw new Error('Network unavailable'); }, /network access/],
   ];
   for (const [fetch, expected] of failures) {
-    const result = await evaluate(input, () => clientWith(fetch));
+    const events: Record<string, unknown>[] = [];
+    const result = await evaluate(input, () => clientWith(fetch), undefined,
+      async event => { events.push(event); });
+    assert.equal(events[1]?.status, 'failure');
+    assert.doesNotMatch(JSON.stringify(events), /simulated-secret/);
     assert.equal(result.isError, true);
     assert.equal(result.structuredContent, undefined);
     assert.match(JSON.stringify(result.content), expected);
@@ -132,13 +146,16 @@ test('auth, service, and transport failures retain useful context without creden
 
 test('host cancellation reaches the SDK transport', async () => {
   const controller = new AbortController();
+  const events: Record<string, unknown>[] = [];
   const client = clientWith(async (_url, init) => {
     assert.ok(init?.signal);
     controller.abort();
     assert.equal(init.signal.aborted, true);
     throw init.signal.reason;
   });
-  const result = await evaluate(input, () => client, controller.signal);
+  const result = await evaluate(input, () => client, controller.signal,
+    async event => { events.push(event); });
+  assert.equal((events[1]?.failure as { category: string }).category, 'cancelled');
   assert.equal(result.isError, true);
   assert.match(JSON.stringify(result.content), /host cancelled/);
 });

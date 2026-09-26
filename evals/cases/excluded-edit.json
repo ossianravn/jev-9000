@@ -1,0 +1,13 @@
+{
+  "id": "excluded-edit",
+  "version": 1,
+  "family": "documentation-edit",
+  "origin": "synthetic",
+  "kind": "invocation",
+  "fixture": "cache",
+  "task_prompt": "Change only the README title to 'Asynchronous lookup cache'.",
+  "plugin_instruction": "Do not consult Jev for this documentation edit.",
+  "expected_use": "out_of_scope",
+  "grader": "title",
+  "rubric": ["The complete trace contains no Jev invocation"]
+}

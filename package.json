@@ -1,14 +1,21 @@
 {
   "name": "jev-9000",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Consult TypeSafe's Jev from Codex and Claude Code.",
   "type": "module",
-  "engines": { "node": ">=22.18.0" },
+  "engines": {
+    "node": ">=22.18.0"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
     "check": "tsc --noEmit",
-    "test": "node --test tests/*.test.ts",
+    "test": "node --test tests/*.test.*",
+    "eval:run": "node evals/run.mjs",
+    "eval:report": "node evals/report.mjs",
+    "eval:review": "node evals/review.mjs",
+    "eval:regrade": "node evals/regrade.mjs",
+    "eval:import": "node evals/import.mjs",
     "smoke": "node scripts/smoke.mjs",
     "start": "node dist/server.mjs"
   },
