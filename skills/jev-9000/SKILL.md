@@ -1,6 +1,6 @@
 ---
 name: jev-9000
-description: Consult Jev for proposition checks, choices, trade-offs, and skill selection during the current task. Use when the user requests Jev or JEV 9000, scopes consultation, or gives standing instructions to seek its judgment when useful.
+description: Consult Jev for proposition checks, choices, trade-offs, skill selection, and UI planning or component selection. Use when the user requests Jev or JEV 9000, scopes consultation, or gives standing instructions to seek its judgment when useful.
 ---
 
 # JEV 9000
@@ -63,6 +63,13 @@ their consultation scope:
    unclear or misleading catalogue description against the actual skill before
    applying it. Briefly explain a material selection; selection alone is not
    completion of the user's task.
+
+## Plan, build, or improve a UI
+
+When UI consultation falls within the user's scope, read
+[UI planning and component selection](references/ui-planning.md). Use it to
+frame concrete component and layout decisions around the audience's task,
+then deliver the requested plan or continue through implementation.
 
 ## Interpret and continue
 

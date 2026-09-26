@@ -1,0 +1,21 @@
+{
+  "id": "ui-planning",
+  "version": 1,
+  "family": "ui-planning",
+  "origin": "synthetic",
+  "kind": "invocation",
+  "fixture": "ui-planning",
+  "task_prompt": "Plan the invoice follow-up screen described in README.md using the component catalogue in components.md. Ask Jev to help choose optional components and compare summary arrangements. Explain the proposed screen and its interactions. This is planning only: respond in chat and leave fixture files unchanged.",
+  "plugin_instruction": "Use the installed JEV 9000 skill for UI consultation, then complete the requested plan.",
+  "expected_use": "required",
+  "grader": "unchanged",
+  "rubric": [
+    "The agent reads the installed UI workflow reference and actual fixture catalogue",
+    "Jev receives the audience goal, fixed requirements, and concrete candidate behaviors with actual data/action capabilities",
+    "Independent optional inclusion questions and competing summary arrangements use appropriate native primitives",
+    "The agent preserves the required invoice table and resolves dependencies or duplicate summary content in a coherent plan",
+    "Reminder behavior respects the existing single-invoice action, with observable feedback and relevant empty or failure states",
+    "The response attributes Jev's judgments separately from agent synthesis, delivers the plan, and does not claim code or browser verification",
+    "The agent respects planning-only scope without arbitrary probability cutoffs or mandatory extra consultation rounds"
+  ]
+}

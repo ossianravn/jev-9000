@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -17,9 +17,15 @@ const deferred = () => {
 
 if (grader === 'unchanged') {
   await check('Consultation leaves fixture files unchanged', async () => {
-    for (const file of ['README.md', 'cache.mjs']) {
-      assert.equal(await readFile(join(workspace, file), 'utf8'), await readFile(join(fixture, file), 'utf8'));
-    }
+    const snapshot = async root => {
+      const result = {};
+      for (const file of (await readdir(root, { recursive: true })).sort()) {
+        const path = join(root, file);
+        if ((await stat(path)).isFile()) result[file] = await readFile(path, 'base64');
+      }
+      return result;
+    };
+    assert.deepEqual(await snapshot(workspace), await snapshot(fixture));
   });
 } else if (grader === 'title') {
   await check('Requested title and unchanged implementation', async () => {

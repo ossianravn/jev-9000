@@ -242,3 +242,73 @@ the updated skill. Claude's previously recorded authentication gap remains.
 Case JSON, catalogue descriptions/paths, `git diff --check`, and the new code
 file's physical line count (13) passed. Existing runtime test results remain
 applicable; no application suite or extra model trial was needed.
+
+## UI planning and building — September 26, 2026
+
+The user approved a UI consultation workflow through the existing evaluator:
+the agent supplies the audience's task and concrete component candidates, Jev
+evaluates inclusion or competing arrangements, and the agent delivers the
+requested plan, implementation, or improvement. Requirements remain fixed
+context. The agent owns composition, code, and verification. Runtime UI
+generation and a json-render dependency are outside this increment.
+
+Implementation and verification plan:
+
+1. [x] Add discoverable UI guidance to the shared skill, with a linked reference
+   loaded only for UI consultation. Cover candidate meaning, dependencies,
+   whole-screen coherence, and plan versus build continuation.
+2. [x] Document an outside-in invoice-screen example in README.
+3. [x] Add one synthetic planning invocation case to the existing runner, using
+   a component catalogue and actual installed Codex/TypeSafe calls. Review the
+   resulting plan against the task independently of Jev's preferences.
+4. [x] Refresh the ordinary installed skill/reference, verify matching hashes,
+   review the diff and line counts, and record evidence and remaining gaps.
+
+Validation is one host planning trial plus direct artifact checks; no new
+application tests or runtime changes are needed. Generalize the existing
+unchanged-fixture grader beyond cache-specific filenames for the new fixture.
+Check that comparison directly with an unchanged and a modified fixture.
+
+Sources: the user-supplied `.dev-docs/jev-ui.md`,
+[json-render's Jev guide](https://json-render.dev/docs/jev), and TypeSafe's
+[Noul](https://docs.typesafe.ai/primitives/noul),
+[Choice](https://docs.typesafe.ai/primitives/choice), and
+[skill-suggestion cookbook](https://docs.typesafe.ai/cookbooks/skill_suggestion).
+These support the selection pattern; the workflow retains native primitives
+without importing demo thresholds, layout budgets, or runtime composition APIs.
+
+Validation completed:
+
+- `npm run eval:run -- --case ui-planning --arm treatment`: actual installed
+  Codex trial completed in 139.17 seconds. Six independent Nouls were followed
+  by a Choice supplied with the selected plan and prior answers. Both calls
+  returned `jev-1.13.0`; combined usage was 3,255 input and 147 output tokens.
+- Jev returned 0.82 for the overdue filter, 0.75 for customer search, 0.06 for
+  revenue chart, 0.93 for per-row reminders, 0.17 for bulk reminders, and 0.66
+  for summary inclusion. The layout Choice selected the compact row (0.86
+  relative probability, 0.72 confidence). These are observations, not thresholds.
+- Agent-assisted review passed: actual candidate descriptions and capabilities
+  were supplied, required content retained, and the agent delivered a coherent
+  plan covering reminder interactions and relevant states. Explanatory synthesis
+  was attributed to the agent. No fixture edits or UI implementation were claimed.
+- The independent unchanged-fixture grader passed. Direct checks confirmed it
+  accepts unchanged fixtures and rejects an altered catalogue; existing invocation
+  fixtures also passed. The changed grader is 90 physical lines. Case JSON,
+  reference paths, installed content identity, and `git diff --check` passed.
+- `eval:review` saved the review and `eval:report` regenerated this run's report
+  from saved evidence. No new unit tests, runtime build, or broad suite was needed.
+
+Evidence: `C:/Users/Ossian/.jev-9000/evals/2026-09-26T14-34-08.613Z-6338c142/`.
+In its treatment trial, `turn-1.jsonl` lines 5/11/13 show skill, UI reference,
+and fixture reads; lines 15/18 contain the actual calls. The final plan is in
+`final-response.txt`. One synthetic planning task does not establish improved
+design quality. Build continuation and rendered interactions were not exercised;
+Claude's previously accepted authentication gap remains.
+
+Workspace, local source, ordinary installed cache, and trial-installed skill and
+UI reference contents match. Skill SHA-256:
+`e2e2a8ca1e894fb4d8182db729e1c31a4cfa29c231fa785c425ab123ba245b92`.
+UI reference SHA-256:
+`d5cad027345c4c60e13ac56570b825d5334a7b874092801200d60db5efc01979`.
+The ordinary installed README was refreshed too. Start a new host session to
+load the updated instructions; the 0.2.0 runtime remains unchanged.

@@ -157,6 +157,45 @@ For ongoing use, add this standing instruction to your chat or project:
 
 > Use Jev to help select relevant skills for my tasks.
 
+### Plan or build a UI with Jev
+
+Use Jev to help your agent decide which components belong on a screen and which
+arrangement supports the people using it. You can ask for a plan first:
+
+> Plan an invoice screen for a freelancer who needs to find overdue invoices
+> and follow up with customers. Ask Jev to help choose components from our
+> project and compare useful layout alternatives. Show me the plan before coding.
+
+Or ask the agent to carry the work through:
+
+> Build that invoice screen. Use Jev for component and layout decisions where
+> useful, then implement and verify the interactions.
+
+The agent inspects your project and supplies Jev with the audience's goal,
+requirements, available data and actions, and concrete component candidates.
+For example, it describes an overdue filter's behavior rather than sending
+only the name `Select`.
+
+| Decision | What Jev receives | What comes back |
+| --- | --- | --- |
+| Include an overdue filter? | Its behavior and the invoice follow-up task | A Noul: probability that including it helps |
+| Include a revenue chart? | What the chart shows and the screen's purpose | A separate Noul; multiple components can fit |
+| Use summary cards or a compact row? | Both arrangements, showing the same summary information | A Choice, option probabilities, and confidence |
+
+As an **illustrative, made-up result**, Jev might return `overdue_filter: 0.94`,
+`revenue_chart: 0.12`, and choose `compact_row`. The agent could then propose a
+compact summary above the invoice table, an overdue filter, and a reminder
+action for each eligible invoice, explaining how that serves the task.
+
+The agent keeps required content, resolves dependencies and duplicated information,
+and accounts for empty screens, errors, and action feedback where relevant. It
+owns the explanation, implementation, and verification. Jev judges the options
+supplied; it does not generate the UI code, missing content, or action handlers.
+
+The same workflow can assess improvements to an existing screen. Planning stops
+at the requested plan; building continues into the project's normal UI stack.
+No additional rendering library or runtime Jev integration is required.
+
 ## Get started
 
 You need **Node.js 22.18+**, npm, Git, a working Codex or Claude Code installation,
