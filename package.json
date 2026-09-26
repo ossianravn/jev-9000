@@ -1,6 +1,6 @@
 {
   "name": "jev-9000",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Consult TypeSafe's Jev from Codex and Claude Code.",
   "type": "module",
@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "package": "npm run build && node scripts/package.mjs",
     "check": "tsc --noEmit",
     "test": "node --test tests/*.test.*",
     "eval:run": "node evals/run.mjs",

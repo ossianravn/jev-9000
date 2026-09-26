@@ -1,0 +1,20 @@
+{
+  "name": "jev-9000",
+  "interface": {
+    "displayName": "Jev 9000"
+  },
+  "plugins": [
+    {
+      "name": "jev-9000",
+      "source": {
+        "source": "local",
+        "path": "./plugins/jev-9000"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

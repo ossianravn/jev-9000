@@ -3,5 +3,7 @@
 !.env.example
 node_modules/
 dist/
+!plugins/jev-9000/dist/
+!plugins/jev-9000/dist/server.mjs
 .verification/
 *.tgz

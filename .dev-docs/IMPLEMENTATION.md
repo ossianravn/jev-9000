@@ -312,3 +312,45 @@ UI reference SHA-256:
 `d5cad027345c4c60e13ac56570b825d5334a7b874092801200d60db5efc01979`.
 The ordinary installed README was refreshed too. Start a new host session to
 load the updated instructions; the 0.2.0 runtime remains unchanged.
+
+## GitHub distribution — September 26, 2026
+
+The user approved a ready-to-run GitHub marketplace for external testers and
+will perform WSL verification personally. Do not run WSL trials in this pass.
+
+Plan:
+
+1. [x] Add the `jev-9000` repo marketplace and a generated, committed plugin
+   under `plugins/jev-9000`, including the bundled runtime and shared skills.
+   Publish this distribution increment as 0.3.0; retain editable sources at root.
+2. [x] Add one packaging command and document the release/update procedure.
+   Configuration stays outside the package via the existing JEV_9000_ENV_FILE
+   setting; no runtime behavior or new dependencies are required.
+3. [x] Replace developer-oriented onboarding with external tester instructions:
+   GitHub install, personal configuration, fresh session, smoke prompt, updates.
+4. [x] Validate the package, install from a clean Git snapshot using an isolated
+   Codex configuration on Windows, and exercise the installed MCP path.
+5. [ ] Publish to GitHub and verify the documented remote install/update commands
+   against it. Record results, with WSL explicitly left to the user.
+
+Validation is packaging/installation focused. Reuse the existing mixed MCP smoke
+and inspect generated assets, credentials, manifest versions, and source fidelity.
+No new application tests or unrelated suite is selected.
+
+Pre-publication checks passed: `npm run package`, the plugin-creator validator,
+marketplace identifier validation, staged secret/machine-path scan, and
+`git diff --cached --check`. The packaging script has 30 physical lines; the
+37,400-line bundled runtime is generated, with its source and dependencies
+maintained separately. The validator required PyYAML in an external verification
+directory; no project dependency was added.
+
+An archived Git index snapshot (no local `.env`, `node_modules`, or untracked
+build inputs) installed as `jev-9000@jev-9000` version 0.3.0 in a fresh Windows
+CODEX_HOME. A standalone MCP client then exercised that installed copy using
+only the external environment-file setting and returned live `jev-1.13.0`
+Choice/Noul/Score answers (508 input, 73 output tokens). This is installed
+transport validation, not a new host-agent trial or WSL result.
+
+Evidence: `C:/Users/Ossian/.jev-9000/verification/github-distribution-20260926/`.
+`local-install-0.json`, `local-install-1.json`, and `local-smoke.json` retain the
+installation and call results; runtime records are under `local-calls/`.
