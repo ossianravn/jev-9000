@@ -1,0 +1,14 @@
+{
+  "name": "jev-9000",
+  "owner": { "name": "Ossian" },
+  "description": "Jev 9000: a second opinion for proposition checks, choices, and trade-offs.",
+  "plugins": [
+    {
+      "name": "jev-9000",
+      "source": "./plugins/jev-9000",
+      "description": "Consult Jev for proposition checks, choices, and trade-off assessments during your task.",
+      "version": "0.3.0",
+      "category": "productivity"
+    }
+  ]
+}

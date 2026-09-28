@@ -289,22 +289,27 @@ are not configured by this plugin. These are
 
 ### Claude Code
 
-Clone the repository and point Claude at the prebuilt package. Use the same
-external configuration file and `JEV_9000_ENV_FILE` setting described above:
+The same repository is also a Claude Code marketplace. Inside Claude Code, run:
 
-```sh
-git clone https://github.com/ossianravn/jev-9000.git
-export JEV_9000_ENV_FILE="$HOME/.jev-9000/config.env"
-claude --plugin-dir ./jev-9000/plugins/jev-9000
+```text
+/plugin marketplace add ossianravn/jev-9000
+/plugin install jev-9000@jev-9000
 ```
 
-Invoke `/jev-9000:jev-9000` and ask your question. This
-[session-local loading method](https://code.claude.com/docs/en/plugins/create#develop-without-a-marketplace)
-loads the plugin for that session; use the flag each time you start one.
+Claude Code installs its own copy of the prebuilt package; no clone or build is
+needed. Use the same external configuration file described above, and set
+`JEV_9000_ENV_FILE` in the terminal before starting `claude`:
 
-To update that checkout, run `git pull --ff-only` inside it and start a new Claude
-session with the same flag. No build or dependency installation is needed to use
-the prebuilt package.
+```sh
+export JEV_9000_ENV_FILE="$HOME/.jev-9000/config.env"
+claude
+```
+
+Invoke `/jev-9000:jev-9000` and ask your question, or ask the agent to consult
+Jev. To update, run `/plugin marketplace update jev-9000` and start a new session.
+
+To try a local checkout without installing it, load the package for one session
+with `claude --plugin-dir ./jev-9000/plugins/jev-9000`.
 
 ## Logging and settings
 
