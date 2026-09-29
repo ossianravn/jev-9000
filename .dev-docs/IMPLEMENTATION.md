@@ -370,3 +370,75 @@ installation. No second identical API call was needed. Evidence is in
 The user's ordinary Windows installation was not changed by these isolated
 checks. WSL execution is explicitly left to the user as requested; Claude's
 previously recorded host-authentication gap is unchanged.
+
+## Claude GitHub installation verification — September 29, 2026
+
+Plan: validate the existing Claude manifests, install the public GitHub package
+into a fresh Claude configuration, and run a real Claude consultation from
+outside the developer checkout using the installed skill and MCP server.
+Reuse local authentication without recording credential contents. Exercise the
+marketplace refresh and plugin update commands, then document the verified
+setup and remaining limits in README. No new application tests are needed for
+this installation/documentation task; WSL verification remains with the user.
+
+Results: passed with Claude Code 2.1.283, Node 24.19.0, plugin 0.3.0 on Windows.
+Both `claude plugin validate .claude-plugin/marketplace.json` and
+`claude plugin validate plugins/jev-9000` passed. The public GitHub marketplace
+already existed in commit 499fe0a; no manifest or runtime change was necessary.
+
+In a fresh CLAUDE_CONFIG_DIR, from an empty directory outside this checkout:
+
+- `claude plugin marketplace add ossianravn/jev-9000` downloaded GitHub via HTTPS.
+- `claude plugin install jev-9000@jev-9000` installed an enabled user-scope copy.
+- `claude plugin marketplace update jev-9000` and
+  `claude plugin update jev-9000@jev-9000` passed. This verifies current-version
+  refresh (already latest 0.3.0), not a transition to a future release.
+- `claude plugin list --json` identified the independent cached package.
+- A standalone client used its native .mcp.json and returned live Choice, Noul,
+  and Score answers from jev-1.13.0 (508 input / 73 output tokens).
+
+The initial actual-agent request exposed expired OAuth credentials even though
+`claude auth status` reported logged in. The ordinary profile failed identically.
+After the user ran `claude auth login`, the actual installed-host trial passed:
+Claude loaded `jev-9000:jev-9000` through Skill, discovered the connected native
+plugin server, and called `mcp__plugin_jev-9000_jev-9000__jev_evaluate` once with
+all three independent question types. Jev returned jev-1.13.0, selecting the
+existing runner, Noul 0.95, Score 3.02 on the agent's 0–4 rubric, and usage of
+1,046 input / 83 output tokens. Claude then delivered its recommendation and
+implementation plan. Exit 0; completed; no permission denials or file changes.
+The authenticated run took about 31 seconds using the host's default model.
+
+The host ran in print mode with the Skill and Jev tool explicitly allowed for
+this test. No --plugin-dir, developer runtime path, or custom MCP override was
+used. Authentication was reused via a local hard link without reading secrets
+into the prompt/evidence. Jev read the existing external config.env. The user's
+ordinary plugin configuration was not changed by the isolated checks.
+
+Evidence lives under
+`C:/Users/Ossian/.jev-9000/verification/claude-github-20260929/`:
+install-0.json through install-4.json, installed-smoke.json, the authenticated
+host trace/summary, calls/, and package-identity.json. All nine non-README
+package assets match the tested GitHub-installed copy byte-for-byte; only the
+README changed. Its generated copy matches the source. `npm run package`,
+native Claude validation, and `git diff --check` passed. No authored code changed
+and no new application tests were added.
+
+README now presents both hosts at installation, shares external configuration
+and the test prompt, documents Claude's actual manifest names, distinguishes
+catalogue refresh from installed-plugin update, and explains the separate host
+login and TypeSafe credential. Runtime/version remain 0.3.0 for this docs-only
+change. WSL execution remains with the user.
+
+Scope of evidence: this closes the Claude installed-host authentication and
+consultation gap. It is a planning smoke, not a paired outcome evaluation or
+coverage of standing-scope changes, skill selection, and UI planning in Claude.
+The final prose also inferred a reason for Jev's 0.95 without evidence and
+proposed extra limits; successful transport does not certify every explanation
+or plan detail. No quality-improvement claim is made.
+
+Cleanup limitation: automatic approval review blocked removal of the temporary
+host-home/.credentials.json authentication hard link with only "blocked by
+policy". The link remains in the external test profile; no credential contents
+were printed or committed. Independent final checks confirmed the trial
+workspace has zero files, the host completed with one Jev call and no permission
+denials, and the generated README equals its source.

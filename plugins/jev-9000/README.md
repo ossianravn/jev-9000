@@ -214,10 +214,26 @@ codex plugin marketplace add ossianravn/jev-9000
 codex plugin add jev-9000@jev-9000
 ```
 
+For **Claude Code**, run these commands in your terminal:
+
+```sh
+claude plugin marketplace add ossianravn/jev-9000
+claude plugin install jev-9000@jev-9000
+```
+
+Inside an interactive Claude session, the corresponding commands start with
+`/plugin` instead of `claude plugin`. Choose user scope to use JEV across your
+projects. Continue with configuration below before testing the connection.
+
 The repository includes a *marketplace*: a catalogue pointing to the ready-to-run
-plugin. Codex downloads it and installs its own copy. You do not need to clone
+plugin. Your host downloads it and installs its own copy. You do not need to clone
 the source yourself, build anything, or copy files from the author's computer.
 The current packaged version is **0.3.0**.
+
+Claude's manifests are `.claude-plugin/marketplace.json` for the catalogue and
+`.claude-plugin/plugin.json` inside the plugin. Its `.mcp.json` starts the bundled
+runtime from Claude's installed cache. No `manifest.json` or developer checkout
+is needed. These follow [Claude's plugin format](https://code.claude.com/docs/en/plugins-reference).
 
 ### 2. Save your settings outside the plugin
 
@@ -236,15 +252,16 @@ TYPESAFE_API_KEY=your-key-here
 TYPESAFE_MODEL=jev-latest
 ```
 
-Tell the plugin where to find it, then start a new Codex session from that terminal:
+Tell the plugin where to find it:
 
 ```sh
 export JEV_9000_ENV_FILE="$HOME/.jev-9000/config.env"
-codex
 ```
 
+Then run `codex` or `claude` from that same terminal to start your chosen host.
+
 Add the `export` line to your shell startup file, such as `~/.bashrc`, if you want
-it available in future terminals. The file stays outside Codex's plugin cache,
+it available in future terminals. The file stays outside the host's plugin cache,
 so plugin updates do not replace your settings. Keep it private.
 
 On **Windows PowerShell**, create `$HOME/.jev-9000/config.env` with the same
@@ -252,10 +269,10 @@ content, then run:
 
 ```powershell
 $env:JEV_9000_ENV_FILE = "$HOME/.jev-9000/config.env"
-codex
 ```
 
-That assignment applies to the current terminal and the Codex process it starts.
+Then run `codex` or `claude` in that terminal. That assignment applies to the
+current terminal and the host process it starts.
 Setting it in a terminal does not update an already-running desktop app.
 
 ### 3. Test the connection
@@ -267,9 +284,14 @@ In the new session, ask:
 > model name. Do not modify any files.
 
 You should see a `jev_evaluate` tool call followed by Jev's judgment and the
-agent's explanation. You can also find JEV under `/plugins` or
-invoke `$jev-9000`. If setup fails, check `node --version`, the environment-file
-path, and your key, then start a fresh session from the configured terminal.
+agent's explanation. In Codex, find JEV under `/plugins` or invoke `$jev-9000`.
+In Claude Code, find it under `/plugin` or invoke `/jev-9000:jev-9000` with your
+question. Claude may ask you to allow the tool through its normal permissions.
+
+If setup fails, check `node --version`, the environment-file path, and your
+TypeSafe key, then start a fresh session from the configured terminal. If Claude
+reports an expired OAuth session, run `claude auth login` in your terminal and
+retry. That login belongs to Claude; your TypeSafe key configures Jev separately.
 
 ### Update an installed copy
 
@@ -287,29 +309,18 @@ to load it. Your external configuration file remains in place; automatic updates
 are not configured by this plugin. These are
 [Codex's marketplace commands](https://learn.chatgpt.com/docs/developer-commands).
 
-### Claude Code
-
-The same repository is also a Claude Code marketplace. Inside Claude Code, run:
-
-```text
-/plugin marketplace add ossianravn/jev-9000
-/plugin install jev-9000@jev-9000
-```
-
-Claude Code installs its own copy of the prebuilt package; no clone or build is
-needed. Use the same external configuration file described above, and set
-`JEV_9000_ENV_FILE` in the terminal before starting `claude`:
+For **Claude Code**, exit the active session and run:
 
 ```sh
-export JEV_9000_ENV_FILE="$HOME/.jev-9000/config.env"
-claude
+claude plugin marketplace update jev-9000
+claude plugin update jev-9000@jev-9000
+claude plugin list
 ```
 
-Invoke `/jev-9000:jev-9000` and ask your question, or ask the agent to consult
-Jev. To update, run `/plugin marketplace update jev-9000` and start a new session.
-
-To try a local checkout without installing it, load the package for one session
-with `claude --plugin-dir ./jev-9000/plugins/jev-9000`.
+The first command refreshes the catalogue; the second updates the installed
+plugin. Start a new `claude` session from your configured terminal afterward.
+You can also enable marketplace auto-updates through Claude's `/plugin` panel.
+See [Claude's installation and update guide](https://code.claude.com/docs/en/discover-plugins).
 
 ## Logging and settings
 
@@ -356,8 +367,14 @@ Leave logging enabled to include consultation records. See the
 
 **Current evidence:** Codex consultations have been exercised in actual host
 tasks. Three paired coding trials passed with and without Jev; they do not yet
-demonstrate better outcomes. Claude's MCP connection has been checked, but a full
-agent trial remains unverified because the test login expired. Details are in the
+demonstrate better outcomes. On September 29, 2026, Claude Code 2.1.283 passed a
+fresh GitHub install, marketplace refresh, and current-version update check on
+Windows. Claude discovered the installed skill and connected its MCP server.
+After loading the skill, Claude made a real Jev call with Noul, Choice, and Score
+questions and continued with a recommendation and plan. This ran outside the
+developer checkout using the installed cache and an external settings file.
+It verifies the consultation workflow, not improved outcomes or every agent
+use case. WSL execution remains unverified. Details are in the
 [implementation and verification record](.dev-docs/IMPLEMENTATION.md).
 
 ## Development
@@ -380,7 +397,8 @@ to check an installed copy, or `--host claude` to use Claude's MCP configuration
 Before publishing a plugin update:
 
 1. Update the version in `package.json`, the lockfile's root package, and all
-   three plugin manifests at the repository root.
+   three plugin manifests at the repository root, plus the plugin entry in
+   `.claude-plugin/marketplace.json`.
 2. Run `npm run package` to rebuild the runtime and refresh the entire generated
    plugin, including skills and this README. The command checks manifest versions.
 3. Validate the affected behavior and review the generated diff. Commit and push
