@@ -1,6 +1,6 @@
 {
   "name": "jev-9000",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Consult Jev for checks, choices, and trade-off assessments during your task.",
   "author": {
     "name": "Ossian"
@@ -13,7 +13,10 @@
     "developerName": "Ossian",
     "category": "Productivity",
     "capabilities": [],
-    "defaultPrompt": ["Ask Jev which approach best fits this task."]
+    "defaultPrompt": ["Ask Jev which approach best fits this task."],
+    "brandColor": "#D7261E",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/icon.svg"
   },
   "mcpServers": "./.mcp.json"
 }

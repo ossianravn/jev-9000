@@ -13,7 +13,7 @@ for (const path of manifests) {
 }
 
 // Only these public assets enter the generated distribution; never copy the checkout.
-const files = [...manifests, 'mcp.json', '.mcp.json', '.env.example', 'README.md', 'dist/server.mjs'];
+const files = [...manifests, 'mcp.json', '.mcp.json', '.env.example', 'README.md', 'assets/icon.svg', 'dist/server.mjs'];
 for (const entry of await readdir(join(root, 'skills'), { recursive: true, withFileTypes: true })) {
   if (entry.isFile()) files.push(join(entry.parentPath, entry.name).slice(root.length + 1));
 }
