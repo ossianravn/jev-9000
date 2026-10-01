@@ -37,9 +37,19 @@ conversation throughout.
 
 - **Node.js 22.18+** and Git
 - A current **Codex CLI** or **Claude Code** installation
-- Your own **TypeSafe API key** from the [TypeSafe dashboard](https://console.typesafe.ai)
-  (see the [quick start](https://docs.typesafe.ai/introduction/quickstart)).
-  Consultations make API calls using your TypeSafe account.
+- Your own **TypeSafe API key** (see below). Consultations make API calls using
+  your TypeSafe account.
+
+### Get a TypeSafe API key
+
+1. Sign in or create an account at the [TypeSafe console](https://console.typesafe.ai).
+2. Open [API keys](https://console.typesafe.ai/keys) and create a key.
+3. Keep it handy for [step 2](#2-add-your-typesafe-key) below.
+
+> [!TIP]
+> New TypeSafe users get **$5 of free credit**, with no credit card needed.
+> See the [TypeSafe quick start](https://docs.typesafe.ai/introduction/quickstart)
+> for more.
 
 ### 1. Add the plugin
 
