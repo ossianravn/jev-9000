@@ -374,8 +374,7 @@ After loading the skill, Claude made a real Jev call with Noul, Choice, and Scor
 questions and continued with a recommendation and plan. This ran outside the
 developer checkout using the installed cache and an external settings file.
 It verifies the consultation workflow, not improved outcomes or every agent
-use case. WSL execution remains unverified. Details are in the
-[implementation and verification record](.dev-docs/IMPLEMENTATION.md).
+use case. WSL execution remains unverified.
 
 ## Development
 

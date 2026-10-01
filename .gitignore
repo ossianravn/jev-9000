@@ -7,3 +7,7 @@ dist/
 !plugins/jev-9000/dist/server.mjs
 .verification/
 *.tgz
+
+# Local process docs (not published)
+AGENTS.md
+.dev-docs/
