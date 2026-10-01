@@ -1,24 +1,166 @@
-# JEV 9000
+<p align="center">
+  <img src="https://raw.githubusercontent.com/ossianravn/jev-9000/main/assets/jev-9000.svg" alt="JEV 9000" width="560">
+</p>
 
-Give your coding agent a second opinion while it works.
+<p align="center">
+  <a href="#install"><img src="https://img.shields.io/github/package-json/v/ossianravn/jev-9000?label=version&color=d7261e" alt="Version"></a>
+  <a href="#install"><img src="https://img.shields.io/badge/Codex-plugin-111111" alt="Codex plugin"></a>
+  <a href="#install"><img src="https://img.shields.io/badge/Claude%20Code-plugin-D97757?logo=claude&logoColor=white" alt="Claude Code plugin"></a>
+  <a href="#requirements"><img src="https://img.shields.io/badge/Node.js-22.18%2B-5FA04E?logo=nodedotjs&logoColor=white" alt="Node.js 22.18+"></a>
+  <a href="https://docs.typesafe.ai/introduction"><img src="https://img.shields.io/badge/powered%20by-Jev%20%C2%B7%20TypeSafe-1f5fd1" alt="Powered by Jev from TypeSafe"></a>
+</p>
 
-JEV 9000 is a plugin for **Codex and Claude Code**. It lets your agent consult
+<p align="center">
+  <a href="#install"><b>Install</b></a> ·
+  <a href="#use-it">Use it</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#examples">Examples</a> ·
+  <a href="#update">Update</a> ·
+  <a href="#logging-and-settings">Settings</a> ·
+  <a href="#development">Development</a>
+</p>
+
+---
+
+**JEV 9000** is a plugin for **Codex** and **Claude Code** that gives your coding
+agent a second opinion while it works. The agent consults
 [Jev](https://docs.typesafe.ai/introduction), TypeSafe's model for structured
-judgments, to check an assumption, compare approaches, or assess a trade-off.
-Your agent gathers the context, interprets the result, and continues your task.
-
-You use ordinary prompts:
+judgments, to check an assumption, compare approaches, or assess a trade-off,
+then interprets the result and carries on with your task. You stay in the same
+conversation throughout.
 
 > Ask Jev whether this design meets the requirement before implementing it.
 
-You can also give a standing instruction in your chat or project instructions:
+## Install
+
+### Requirements
+
+- **Node.js 22.18+** and Git
+- A current **Codex CLI** or **Claude Code** installation
+- Your own **TypeSafe API key** from the [TypeSafe dashboard](https://console.typesafe.ai)
+  (see the [quick start](https://docs.typesafe.ai/introduction/quickstart)).
+  Consultations make API calls using your TypeSafe account.
+
+### 1. Add the plugin
+
+**Claude Code**
+
+```sh
+claude plugin marketplace add ossianravn/jev-9000
+claude plugin install jev-9000@jev-9000
+```
+
+Inside an interactive Claude session, use `/plugin` instead of `claude plugin`.
+Choose user scope to use JEV across your projects.
+
+**Codex CLI**
+
+```sh
+codex plugin marketplace add ossianravn/jev-9000
+codex plugin add jev-9000@jev-9000
+```
+
+Run these in the environment where you use Codex. For WSL, that means your WSL
+terminal with Linux Node.js, Git, and Codex installed.
+
+> [!NOTE]
+> The repository is a *marketplace*: a catalogue pointing to the ready-to-run
+> plugin. Your host downloads and installs its own copy. There is nothing to
+> clone or build.
+
+### 2. Add your TypeSafe key
+
+Create `~/.jev-9000/config.env` in your home directory, replacing the
+placeholder with your own key:
+
+```dotenv
+TYPESAFE_API_KEY=your-key-here
+TYPESAFE_MODEL=jev-latest
+```
+
+Then tell the plugin where to find it, and start `codex` or `claude` from that
+same terminal.
+
+**macOS / Linux / WSL**
+
+```sh
+export JEV_9000_ENV_FILE="$HOME/.jev-9000/config.env"
+```
+
+Add the line to your shell startup file, such as `~/.bashrc`, to keep it in
+future terminals.
+
+**Windows PowerShell**
+
+```powershell
+$env:JEV_9000_ENV_FILE = "$HOME/.jev-9000/config.env"
+```
+
+This applies to the current terminal and the host it starts. It does not update
+an already-running desktop app.
+
+> [!IMPORTANT]
+> Keep `config.env` private. It lives outside the plugin cache, so plugin
+> updates never replace your settings.
+
+### 3. Test the connection
+
+In a new session, ask:
+
+> Use JEV 9000 to evaluate whether a browser-only import can reliably continue
+> after the browser closes. Make a real Jev call and show me its judgment and
+> model name. Do not modify any files.
+
+You should see a `jev_evaluate` tool call followed by Jev's judgment and the
+agent's explanation. Claude may ask you to allow the tool through its normal
+permissions.
+
+| Host | Find the plugin | Invoke the skill directly |
+| --- | --- | --- |
+| Claude Code | `/plugin` | `/jev-9000:jev-9000 <question>` |
+| Codex | `/plugins` | `$jev-9000` |
+
+<details>
+<summary><b>Troubleshooting</b></summary>
+
+- Check `node --version`, the environment-file path, and your TypeSafe key, then
+  start a fresh session from the configured terminal.
+- If Claude reports an expired OAuth session, run `claude auth login` and retry.
+  That login belongs to Claude; your TypeSafe key configures Jev separately.
+
+</details>
+
+## Use it
+
+Ask in ordinary language, either for a single decision:
+
+> Ask Jev whether this design meets the requirement before implementing it.
+
+or as a standing instruction in your chat or project instructions:
 
 > Use Jev for database and API design decisions in this project.
 
 > Use Jev when a second opinion would help.
 
-The agent follows that scope, including later changes to it. You stay in the
-same conversation throughout.
+The agent follows that scope, including later changes to it.
+
+Jev answers three kinds of question:
+
+| Your question | Jev question type | What the agent receives |
+| --- | --- | --- |
+| Does this retry strategy risk duplicate payments? | 🟢 **Noul**: a yes/no check | Probability of yes, such as `noul: 0.8` |
+| Which approach best fits our constraints? | 🔵 **Choice**: compare alternatives | The selected option, probabilities for each option, and confidence |
+| How much operating work would this new service add? | 🟠 **Score**: assess a defined scale | A score, the scale's labels, probabilities, and confidence |
+
+For example, the agent might define operating work as **0: no new responsibilities,
+1: configure an existing service, 2: operate a new service**. An illustrative
+`score: 1.6` is a probability-weighted position on that scale. Choice and Score
+confidence describe how concentrated their answer distributions are.
+
+The agent can batch independent questions over the same context. When a follow-up
+depends on an earlier answer, it makes a new call including that answer or the
+changed facts. A failed consultation is reported as a failure, with an actionable
+error, so the agent can correct it or continue according to your instructions.
 
 ## How it works
 
@@ -47,7 +189,9 @@ Jev receives the context and questions the agent sends. It cannot open repositor
 paths or URLs itself, so the agent must include the relevant content. Jev returns
 numbers and choices; your coding agent supplies the explanation and next action.
 
-## A consultation, from prompt to next action
+## Examples
+
+### A consultation, from prompt to next action
 
 Suppose imports must continue after a user closes the browser. Your project
 already has a persistent job runner, and you want to reuse existing infrastructure.
@@ -60,8 +204,9 @@ already has a persistent job runner, and you want to reuse existing infrastructu
 **The agent inspects the project and asks a Choice question.** You do not need
 to write this JSON yourself; it shows what crosses the tool boundary.
 
-The request, response, and agent reply below are **illustrative**, with made-up
-response values. They are not a live result or a performance claim.
+> [!NOTE]
+> The request, response, and agent reply below are **illustrative**, with
+> made-up response values. They are not a live result or a performance claim.
 
 ```json
 {
@@ -111,36 +256,17 @@ That explanation comes from the coding agent. Jev's Choice probabilities compare
 the supplied options; even a value of `1` is not a guarantee the implementation
 will succeed. The agent still owns implementation and verification.
 
-## Other questions the agent can ask
-
-| Your question | Jev question type | What the agent receives |
-| --- | --- | --- |
-| Does this retry strategy risk duplicate payments? | **Noul** — a yes/no check | Probability of yes, such as `noul: 0.8`. |
-| Which approach best fits our constraints? | **Choice** — compare alternatives | The selected option, probabilities for each option, and confidence. |
-| How much operating work would this new service add? | **Score** — assess a defined scale | A score, the scale's labels, probabilities, and confidence. |
-
-For example, the agent might define operating work as **0: no new responsibilities,
-1: configure an existing service, 2: operate a new service**. An illustrative
-`score: 1.6` is a probability-weighted position on that scale. Choice and Score
-confidence describe how concentrated their answer distributions are.
-
-The agent can batch independent questions over the same context. When a follow-up
-depends on an earlier answer, it makes a new call including that answer or the
-changed facts. A failed consultation is reported as a failure, with an actionable
-error, so the agent can correct it or continue according to your instructions.
-
 ### Let Jev help choose skills
 
 If your agent has several skills available, Jev can help it decide which ones
-fit the task. For example:
+fit the task:
 
 > Ask Jev which of my available skills would help diagnose these checkout
 > failures. Then use the relevant skills to investigate.
 
 The agent sends the task, constraints, and candidate skill names and descriptions.
 It asks a separate yes/no relevance question for each candidate in one call,
-so several skills can fit, or none. With a catalogue containing these skills,
-illustrative judgments might be:
+so several skills can fit, or none. Illustrative judgments might be:
 
 | Candidate skill | Probability that using it would help |
 | --- | ---: |
@@ -153,9 +279,9 @@ and gets on with the investigation. Jev sees the descriptions supplied to it;
 the agent owns discovery and loading. Skills you explicitly request, or that
 project instructions require, still apply regardless of Jev's judgment.
 
-For ongoing use, add this standing instruction to your chat or project:
-
-> Use Jev to help select relevant skills for my tasks.
+> [!TIP]
+> For ongoing use, add a standing instruction: *Use Jev to help select relevant
+> skills for my tasks.*
 
 ### Plan or build a UI with Jev
 
@@ -196,120 +322,12 @@ The same workflow can assess improvements to an existing screen. Planning stops
 at the requested plan; building continues into the project's normal UI stack.
 No additional rendering library or runtime Jev integration is required.
 
-## Get started
+## Update
 
-You need **Node.js 22.18+**, Git, a current Codex CLI or Claude Code installation,
-and your own **TypeSafe API key**. Get the key from the
-[TypeSafe dashboard](https://console.typesafe.ai), as described in its
-[quick start](https://docs.typesafe.ai/introduction/quickstart).
-Consultations make API calls using your TypeSafe account.
+Exit the active session first. Your external configuration file stays in place,
+and this plugin does not configure automatic updates.
 
-### 1. Install from GitHub
-
-For **Codex CLI**, run these commands in the environment where you use Codex.
-For WSL, that means your WSL terminal with Linux Node.js, Git, and Codex installed.
-
-```sh
-codex plugin marketplace add ossianravn/jev-9000
-codex plugin add jev-9000@jev-9000
-```
-
-For **Claude Code**, run these commands in your terminal:
-
-```sh
-claude plugin marketplace add ossianravn/jev-9000
-claude plugin install jev-9000@jev-9000
-```
-
-Inside an interactive Claude session, the corresponding commands start with
-`/plugin` instead of `claude plugin`. Choose user scope to use JEV across your
-projects. Continue with configuration below before testing the connection.
-
-The repository includes a *marketplace*: a catalogue pointing to the ready-to-run
-plugin. Your host downloads it and installs its own copy. You do not need to clone
-the source yourself, build anything, or copy files from the author's computer.
-The current packaged version is **0.3.0**.
-
-Claude's manifests are `.claude-plugin/marketplace.json` for the catalogue and
-`.claude-plugin/plugin.json` inside the plugin. Its `.mcp.json` starts the bundled
-runtime from Claude's installed cache. No `manifest.json` or developer checkout
-is needed. These follow [Claude's plugin format](https://code.claude.com/docs/en/plugins-reference).
-
-### 2. Save your settings outside the plugin
-
-Create `~/.jev-9000/config.env` in your home directory. On WSL/Linux/macOS:
-
-```sh
-mkdir -p "$HOME/.jev-9000"
-nano "$HOME/.jev-9000/config.env"
-```
-
-Use your preferred text editor if you do not use nano. Save this content,
-replacing the placeholder with your own key:
-
-```dotenv
-TYPESAFE_API_KEY=your-key-here
-TYPESAFE_MODEL=jev-latest
-```
-
-Tell the plugin where to find it:
-
-```sh
-export JEV_9000_ENV_FILE="$HOME/.jev-9000/config.env"
-```
-
-Then run `codex` or `claude` from that same terminal to start your chosen host.
-
-Add the `export` line to your shell startup file, such as `~/.bashrc`, if you want
-it available in future terminals. The file stays outside the host's plugin cache,
-so plugin updates do not replace your settings. Keep it private.
-
-On **Windows PowerShell**, create `$HOME/.jev-9000/config.env` with the same
-content, then run:
-
-```powershell
-$env:JEV_9000_ENV_FILE = "$HOME/.jev-9000/config.env"
-```
-
-Then run `codex` or `claude` in that terminal. That assignment applies to the
-current terminal and the host process it starts.
-Setting it in a terminal does not update an already-running desktop app.
-
-### 3. Test the connection
-
-In the new session, ask:
-
-> Use JEV 9000 to evaluate whether a browser-only import can reliably continue
-> after the browser closes. Make a real Jev call and show me its judgment and
-> model name. Do not modify any files.
-
-You should see a `jev_evaluate` tool call followed by Jev's judgment and the
-agent's explanation. In Codex, find JEV under `/plugins` or invoke `$jev-9000`.
-In Claude Code, find it under `/plugin` or invoke `/jev-9000:jev-9000` with your
-question. Claude may ask you to allow the tool through its normal permissions.
-
-If setup fails, check `node --version`, the environment-file path, and your
-TypeSafe key, then start a fresh session from the configured terminal. If Claude
-reports an expired OAuth session, run `claude auth login` in your terminal and
-retry. That login belongs to Claude; your TypeSafe key configures Jev separately.
-
-### Update an installed copy
-
-Exit the active Codex CLI session, refresh the GitHub marketplace, and install
-the refreshed package:
-
-```sh
-codex plugin marketplace upgrade jev-9000
-codex plugin add jev-9000@jev-9000
-codex plugin list --marketplace jev-9000 --json
-```
-
-The listing shows the installed version and enabled state. Start a new session
-to load it. Your external configuration file remains in place; automatic updates
-are not configured by this plugin. These are
-[Codex's marketplace commands](https://learn.chatgpt.com/docs/developer-commands).
-
-For **Claude Code**, exit the active session and run:
+**Claude Code**
 
 ```sh
 claude plugin marketplace update jev-9000
@@ -318,40 +336,50 @@ claude plugin list
 ```
 
 The first command refreshes the catalogue; the second updates the installed
-plugin. Start a new `claude` session from your configured terminal afterward.
-You can also enable marketplace auto-updates through Claude's `/plugin` panel.
-See [Claude's installation and update guide](https://code.claude.com/docs/en/discover-plugins).
+plugin. You can also enable marketplace auto-updates through Claude's `/plugin`
+panel. See [Claude's installation and update guide](https://code.claude.com/docs/en/discover-plugins).
+
+**Codex CLI**
+
+```sh
+codex plugin marketplace upgrade jev-9000
+codex plugin add jev-9000@jev-9000
+codex plugin list --marketplace jev-9000 --json
+```
+
+The listing shows the installed version and enabled state. See
+[Codex's marketplace commands](https://learn.chatgpt.com/docs/developer-commands).
+
+Start a new session from your configured terminal to load the update.
 
 ## Logging and settings
 
-Consultation logs are **on by default**, saved locally under `~/.jev-9000/logs`
-(`~` means your home directory). They include the context sent to Jev, answers or
-errors, timing, model, and token usage. Known credentials are scrubbed, but logs
-can still contain project content. A logging failure leaves the consultation
-usable and reports a diagnostic.
+Consultation logs are **on by default**, saved locally under `~/.jev-9000/logs`.
+They include the context sent to Jev, answers or errors, timing, model, and
+token usage. Known credentials are scrubbed, but logs can still contain project
+content. A logging failure leaves the consultation usable and reports a diagnostic.
 
-To stop new consultation logs, add this to your environment file and restart
-the host/plugin process:
+Settings go in your environment file. Restart the host after changing them.
 
-```dotenv
-JEV_9000_LOGGING=false
-```
-
-Set `true` or remove the setting to re-enable logging. Existing logs remain.
-`JEV_9000_LOG_DIR` changes where new logs are stored. Disabling local logging
-does not change the context sent to TypeSafe for a consultation.
+| Setting | Default | Purpose |
+| --- | --- | --- |
+| `TYPESAFE_API_KEY` | none (required) | Your TypeSafe API key |
+| `TYPESAFE_MODEL` | `jev-latest` | Model to use; `TYPESAFE_DEFAULT_MODEL` takes precedence |
+| `JEV_9000_LOGGING` | `true` | Set `false` to stop new consultation logs; existing logs remain |
+| `JEV_9000_LOG_DIR` | `~/.jev-9000/logs` | Where new logs are stored |
+| `JEV_9000_ENV_FILE` | plugin's own `.env` | Path to the environment file (set in your shell) |
 
 Existing process environment variables take precedence over the environment file.
-If `JEV_9000_ENV_FILE` is unset, the plugin looks for `.env` in its own root.
 Model selection uses a per-call `model` first, then `TYPESAFE_DEFAULT_MODEL`,
 `TYPESAFE_MODEL`, and finally `jev-latest`. Each response names the resolved model.
+Disabling local logging does not change the context sent to TypeSafe.
 
-## Evaluations: does it help on your tasks?
+## Evaluations
 
-For contributors, the repository includes a manual runner that compares tasks completed with and
-without the plugin, grades the final artifacts, and captures how the agent used
-Jev. Evaluations run only when you invoke them. After cloning the repository and
-running `npm ci` and `npm run build`, run from the cloned folder:
+Does it help on your tasks? The repository includes a manual runner that
+compares tasks completed with and without the plugin, grades the final
+artifacts, and captures how the agent used Jev. Evaluations run only when you
+invoke them. After cloning, run `npm ci` and `npm run build`, then:
 
 ```sh
 npm run eval:run -- --case cache-recovery --env ../jev-9000.env --out ../jev-eval-example
@@ -361,20 +389,28 @@ npm run eval:report -- --root ../jev-eval-example
 Use a new `--out` directory for each experiment; omitting it saves evidence under
 `~/.jev-9000/evals`. Trials use the host CLI and can make model/API calls. Reports
 use saved evidence without new model calls. Manual trials still save host traces
-and artifacts when consultation logging is off.
-Leave logging enabled to include consultation records. See the
-[evaluation guide](evals/README.md) for cases, settings, and interpreting reports.
+and artifacts when consultation logging is off; leave logging enabled to include
+consultation records. See the [evaluation guide](evals/README.md) for cases,
+settings, and interpreting reports.
 
-**Current evidence:** Codex consultations have been exercised in actual host
-tasks. Three paired coding trials passed with and without Jev; they do not yet
-demonstrate better outcomes. On September 29, 2026, Claude Code 2.1.283 passed a
-fresh GitHub install, marketplace refresh, and current-version update check on
-Windows. Claude discovered the installed skill and connected its MCP server.
-After loading the skill, Claude made a real Jev call with Noul, Choice, and Score
-questions and continued with a recommendation and plan. This ran outside the
-developer checkout using the installed cache and an external settings file.
-It verifies the consultation workflow, not improved outcomes or every agent
+<details>
+<summary><b>Current evidence</b></summary>
+
+Codex consultations have been exercised in actual host tasks. Three paired
+coding trials passed with and without Jev; they do not yet demonstrate better
+outcomes.
+
+On September 29, 2026, Claude Code 2.1.283 passed a fresh GitHub install,
+marketplace refresh, and current-version update check on Windows. Claude
+discovered the installed skill and connected its MCP server. After loading the
+skill, Claude made a real Jev call with Noul, Choice, and Score questions and
+continued with a recommendation and plan. This ran outside the developer
+checkout using the installed cache and an external settings file.
+
+This verifies the consultation workflow, not improved outcomes or every agent
 use case. WSL execution remains unverified.
+
+</details>
 
 ## Development
 
@@ -393,7 +429,12 @@ Tests use simulated API responses and local files. The smoke command makes a
 real TypeSafe call through the plugin's MCP tool. Add `--root /installed/plugin`
 to check an installed copy, or `--host claude` to use Claude's MCP configuration.
 
-Before publishing a plugin update:
+Claude's manifests are `.claude-plugin/marketplace.json` for the catalogue and
+`.claude-plugin/plugin.json` inside the plugin. Its `.mcp.json` starts the bundled
+runtime from Claude's installed cache, following
+[Claude's plugin format](https://code.claude.com/docs/en/plugins-reference).
+
+### Publishing an update
 
 1. Update the version in `package.json`, the lockfile's root package, and all
    three plugin manifests at the repository root, plus the plugin entry in
@@ -406,4 +447,6 @@ Before publishing a plugin update:
 The marketplace points at that committed directory, so a source-only commit
 does not publish updated plugin behavior. Each release needs a new plugin version.
 
-JEV 9000 is named after HAL 9000.
+---
+
+<p align="center"><sub>JEV 9000 is named after HAL 9000, though Jev is far more cooperative.</sub></p>
