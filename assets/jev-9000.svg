@@ -5,32 +5,55 @@
       <stop offset="0" stop-color="#20242b"/>
       <stop offset="1" stop-color="#0b0d10"/>
     </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffc44d"/>
+      <stop offset="1" stop-color="#ff8a3d"/>
+    </linearGradient>
+    <linearGradient id="left" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd23f"/>
+      <stop offset="0.5" stop-color="#f6a04d"/>
+      <stop offset="1" stop-color="#b48cf5"/>
+    </linearGradient>
+    <linearGradient id="right" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff6b4a"/>
+      <stop offset="0.5" stop-color="#e2556e"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
     <linearGradient id="bezel" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f1f3f5"/>
-      <stop offset="0.45" stop-color="#8b929b"/>
-      <stop offset="0.7" stop-color="#d4d8dd"/>
-      <stop offset="1" stop-color="#5d636b"/>
+      <stop offset="0" stop-color="#f4f6f8"/>
+      <stop offset="0.5" stop-color="#8b929b"/>
+      <stop offset="1" stop-color="#d4d8dd"/>
     </linearGradient>
     <radialGradient id="lens" cx="0.5" cy="0.5" r="0.5">
       <stop offset="0" stop-color="#fff6cf"/>
-      <stop offset="0.07" stop-color="#ffd23f"/>
-      <stop offset="0.2" stop-color="#ff4a1c"/>
-      <stop offset="0.45" stop-color="#c20f0f"/>
-      <stop offset="0.75" stop-color="#3d0404"/>
+      <stop offset="0.1" stop-color="#ffd23f"/>
+      <stop offset="0.28" stop-color="#ff4a1c"/>
+      <stop offset="0.55" stop-color="#c20f0f"/>
+      <stop offset="0.85" stop-color="#3d0404"/>
       <stop offset="1" stop-color="#050000"/>
     </radialGradient>
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="14"/>
-    </filter>
   </defs>
 
   <rect x="1" y="1" width="638" height="218" rx="22" fill="url(#panel)" stroke="#2f353e" stroke-width="2"/>
 
-  <circle cx="125" cy="110" r="70" fill="#ff2a12" opacity="0.35" filter="url(#glow)"/>
-  <circle cx="125" cy="110" r="78" fill="url(#bezel)"/>
-  <circle cx="125" cy="110" r="67" fill="#050505"/>
-  <circle cx="125" cy="110" r="60" fill="url(#lens)"/>
-  <ellipse cx="103" cy="86" rx="20" ry="11" fill="#ffffff" opacity="0.18" transform="rotate(-35 103 86)"/>
+  <ellipse cx="125" cy="112" rx="62" ry="78" fill="#ff5a2a" opacity="0.22" filter="url(#glow)"/>
+  <!-- The plugin icon (assets/icon.svg), scaled into the banner. -->
+  <g transform="translate(16 1.2) scale(0.85)">
+  <g stroke-linejoin="round">
+    <path d="M128 28 L210 72 L128 116 L46 72 Z" fill="url(#top)"/>
+    <path d="M46 72 L128 116 L128 228 L46 184 Z" fill="url(#left)"/>
+    <path d="M128 116 L210 72 L210 184 L128 228 Z" fill="url(#right)"/>
+  </g>
+  <g transform="matrix(1 0.5366 0 1 0 0)">
+    <circle cx="87" cy="103.3" r="31" fill="url(#bezel)"/>
+    <circle cx="87" cy="103.3" r="26" fill="#050505"/>
+    <circle cx="87" cy="103.3" r="22.5" fill="url(#lens)"/>
+    <ellipse cx="79" cy="95" rx="7.5" ry="4" fill="#ffffff" opacity="0.22" transform="rotate(-35 79 95)"/>
+  </g>
+  </g>
 
   <g font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="38" fill="#ffffff" text-anchor="middle" letter-spacing="6">
     <rect x="245" y="56" width="132" height="60" fill="#000000" stroke="#3a3f47" stroke-width="1.5"/>
